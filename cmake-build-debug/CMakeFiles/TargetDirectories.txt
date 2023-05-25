@@ -1,0 +1,5 @@
+/Users/russ/OhMyTask/cmake-build-debug/CMakeFiles/OhMyTask.dir
+/Users/russ/OhMyTask/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/russ/OhMyTask/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/russ/OhMyTask/cmake-build-debug/CMakeFiles/OhMyTask_autogen_timestamp_deps.dir
+/Users/russ/OhMyTask/cmake-build-debug/CMakeFiles/OhMyTask_autogen.dir
