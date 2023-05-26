@@ -19,6 +19,7 @@
 #include <QCheckBox>
 #include <QString>
 #include "third-party/nlohmann/json.hpp"
+#include <iostream>
 QT_BEGIN_NAMESPACE
 
 using nlohmann::json;
@@ -32,7 +33,27 @@ public:
     QVBoxLayout *verticalLayout;
 
     std::function<void()> onOk = [&]() {
-        auto i = json::parse(textEdit->toPlainText().toStdString());
+        nlohmann::basic_json i;
+        if (textEdit->toPlainText().toStdString().find_first_not_of("0123456789") == std::string::npos){
+            auto checkbox = new QCheckBox(textEdit->toPlainText(),verticalLayoutWidget);
+            std::cout << textEdit->toPlainText().toStdString() << std::endl;
+            checkbox->adjustSize();
+            QObject::connect(checkbox, &QCheckBox::clicked, checkbox, &QCheckBox::deleteLater);
+            verticalLayout->addWidget(checkbox);
+            textEdit->clear();
+            return;
+        }
+        try {
+            i = json::parse(textEdit->toPlainText().toStdString());
+        } catch (json::parse_error ) {
+            // handle it as raw string
+            auto checkbox = new QCheckBox(textEdit->toPlainText(),verticalLayoutWidget);
+            checkbox->adjustSize();
+            QObject::connect(checkbox, &QCheckBox::clicked, checkbox, &QCheckBox::deleteLater);
+            verticalLayout->addWidget(checkbox);
+            textEdit->clear();
+            return;
+        }
         for (auto &item : i.items()) {
             if (item.value().is_array()) {
                 for (const auto &i: item.value().get<std::vector<std::string>>()){
@@ -52,7 +73,6 @@ public:
                 verticalLayout->addWidget(newCheckBox);
             }
         }
-        textEdit->clear();
     };
     std::function<void()> onCancel = [&]() {
         textEdit->clear();
